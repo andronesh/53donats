@@ -12,3 +12,12 @@ export const donats = sqliteTable("donats", {
 	commentAnon: text("comment_anon"),
 	amount: integer("amount", { mode: "number" }).notNull(),
 });
+
+export type JarEntity = typeof jars.$inferSelect;
+
+export const jars = sqliteTable("jars", {
+	id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+	bankId: text("bank_id").notNull().unique(),
+	balance: integer("balance", { mode: "number" }).notNull(),
+	goal: integer("goal", { mode: "number" }),
+});
