@@ -1,8 +1,14 @@
+import { Donat } from "@/app/dto/donat";
+import { saveDonats } from "@/app/service/donatsService";
 import { NextRequest } from "next/server";
 
-// type DonatWebhookDto = {
-
-// }
+type DonatWebhookDto = {
+	type: string;
+	data: {
+		account: string;
+		statementItem: Donat;
+	};
+};
 
 export async function GET(request: NextRequest) {
 	const requestHeaders = new Headers(request.headers);
@@ -19,38 +25,15 @@ export async function POST(request: NextRequest) {
 	console.info("Mono just called webhook");
 	const requestHeaders = new Headers(request.headers);
 	requestHeaders.forEach((value, key) => console.info(`HEADER ${key} HAS VALUE ${value}`));
-	const data = await request.json();
+	const data = (await request.json()) as DonatWebhookDto;
 	console.info("Deceived donat data", data);
+	if (data.data.account === process.env.MONO_JAR_ID) {
+		await saveDonats([data.data.statementItem]);
+	}
 	return new Response(JSON.stringify({}), {
 		status: 200,
 		headers: {
 			"Content-Type": "application/json",
 		},
 	});
-	// const appAuthToken = process.env.APP_AUTH_TOKEN;
-	// const requestAuthToken = requestHeaders.get("X-App-Auth-Token");
-	// if (appAuthToken !== undefined && appAuthToken === requestAuthToken) {
-	// 	// const data = (await request.json()) as Donat;
-	// 	// // TODO add validation using zod
-	// 	// console.info("accepted data", data);
-	// 	// console.info(
-	// 	//   `      severity is ${
-	// 	// 	 data.severity
-	// 	//   } and known: ${VersionSeverityValues.includes(data.severity)}`
-	// 	// );
-
-	// 	return new Response(JSON.stringify({}), {
-	// 		status: 200,
-	// 		headers: {
-	// 			"Content-Type": "application/json",
-	// 		},
-	// 	});
-	// } else {
-	// 	return new Response(JSON.stringify({ message: "WHAT ARE YOU TRYING TO DO?!" }), {
-	// 		status: 403,
-	// 		headers: {
-	// 			"Content-Type": "application/json",
-	// 		},
-	// 	});
-	// }
 }
