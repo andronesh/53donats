@@ -1,3 +1,4 @@
+import { updateMainJarState } from "@/db/dao/jarsDAO";
 import { Donat } from "@/dto/donat";
 import { saveDonats } from "@/service/donatsService";
 import { NextRequest } from "next/server";
@@ -31,6 +32,7 @@ export async function POST(request: NextRequest) {
 		const donat = data.data.statementItem;
 		console.info(`Saving donat from ${donat.description} for ${donat.amount} with bank id ${donat.id}`);
 		await saveDonats([donat]);
+		await updateMainJarState(donat.balance, null);
 	} else {
 		console.warn(`Jar id missmatch: ${data.data.account} !== ${process.env.MONO_JAR_ID}`);
 	}
