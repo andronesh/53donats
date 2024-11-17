@@ -7,14 +7,14 @@ export const getDonatsFromJar = async (): Promise<Donat[]> => {
 	const jarId = process.env.MONO_JAR_ID!;
 
 	const apiUrl = `https://api.monobank.ua/personal/statement/${jarId}/${from}/${to}`;
-	let data = await fetch(apiUrl, {
+	const data = await fetch(apiUrl, {
 		headers: {
 			"Content-Type": "application/json",
 			"X-Token": monoApiToken,
 		},
 	});
 
-	let donats = await data.json();
+	const donats = await data.json();
 	console.info(`Fetched ${donats.length} donat${donats.length > 1 ? "s" : ""} from Mono jar`);
 	return donats;
 };

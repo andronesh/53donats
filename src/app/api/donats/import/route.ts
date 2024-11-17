@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
 	const appAuthToken = process.env.APP_AUTH_TOKEN;
 	const requestAuthToken = requestHeaders.get("X-App-Auth-Token");
 	if (appAuthToken !== undefined && appAuthToken === requestAuthToken) {
-		let donats = await getDonatsFromJar();
+		const donats = await getDonatsFromJar();
 
 		const savedDonats = await saveDonats(donats);
 		console.info(`Imported ${saveDonats.length} donat${saveDonats.length === 1 ? "" : "s"}`);
