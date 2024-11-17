@@ -1,5 +1,5 @@
-import { Donat } from "@/app/dto/donat";
-import { saveDonats } from "@/app/service/donatsService";
+import { Donat } from "@/dto/donat";
+import { saveDonats } from "@/service/donatsService";
 import { NextRequest } from "next/server";
 
 type DonatWebhookDto = {

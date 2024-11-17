@@ -1,4 +1,4 @@
-import { getAllDonatsSanitised } from "@/app/service/donatsService";
+import { getAllDonatsSanitised } from "@/service/donatsService";
 
 export async function GET() {
 	const donats = await getAllDonatsSanitised();

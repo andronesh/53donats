@@ -1,5 +1,5 @@
-import { getDonatsFromJar } from "@/app/service/bankaApi";
-import { saveDonats } from "@/app/service/donatsService";
+import { getDonatsFromJar } from "@/service/bankaApi";
+import { saveDonats } from "@/service/donatsService";
 import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
