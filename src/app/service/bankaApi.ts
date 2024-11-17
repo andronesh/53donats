@@ -1,3 +1,5 @@
+"use server";
+
 import { Donat } from "../dto/donat";
 
 export const getDonatsFromJar = async (): Promise<Donat[]> => {

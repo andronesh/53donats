@@ -28,7 +28,11 @@ export async function POST(request: NextRequest) {
 	const data = (await request.json()) as DonatWebhookDto;
 	console.info("Deceived donat data", data);
 	if (data.data.account === process.env.MONO_JAR_ID) {
-		await saveDonats([data.data.statementItem]);
+		const donat = data.data.statementItem;
+		console.info(`Saving donat from ${donat.description} for ${donat.amount} with bank id ${donat.id}`);
+		await saveDonats([donat]);
+	} else {
+		console.warn(`Jar id missmatch: ${data.data.account} !== ${process.env.MONO_JAR_ID}`);
 	}
 	return new Response(JSON.stringify({}), {
 		status: 200,

@@ -1,3 +1,5 @@
+"use server";
+
 import { findDonatByBankId, getAllDonats, insertDonatAndReturn } from "@/db/dao/donatsDAO";
 import { Donat } from "../dto/donat";
 import { DonatEntity } from "@/db/schema";
