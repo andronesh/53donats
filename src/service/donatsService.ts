@@ -4,6 +4,8 @@ import { findDonatByBankId, getAllDonats, insertDonatAndReturn } from "@/db/dao/
 import { Donat } from "../dto/donat";
 import { DonatEntity } from "@/db/schema";
 
+const allowedComments = ["Поповнення рахунку банки", "За псиланням"];
+
 export const getAllDonatsSanitised = async (): Promise<DonatEntity[]> => {
 	const donats = await getAllDonats();
 	for (let i = 0; i < donats.length; i++) {
@@ -39,7 +41,6 @@ const convertToEntityAndAnonymise = (donat: Donat): DonatEntity => {
 		time: new Date(donat.time * 1000).valueOf(),
 		description: donat.description,
 		comment: donat.comment ? donat.comment : null,
-		commentAnon: donat.comment ? donat.comment.replace(/./g, "🇺🇦") : null,
 		amount: donat.amount / 100,
 	} as DonatEntity;
 	const descriptionArray = donat.description.split(" ");
@@ -48,6 +49,13 @@ const convertToEntityAndAnonymise = (donat: Donat): DonatEntity => {
 		entity.descriptionAnon = donat.description.replace(descToReplace, `🇺🇦🇺🇦🇺🇦`);
 	} else {
 		entity.descriptionAnon = donat.description;
+	}
+	if (donat.comment) {
+		entity.commentAnon = allowedComments.includes(donat.comment)
+			? donat.comment
+			: donat.comment.replace(/./g, "🇺🇦");
+	} else {
+		entity.commentAnon = null;
 	}
 	return entity;
 };
